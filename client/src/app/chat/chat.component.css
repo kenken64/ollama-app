@@ -1,0 +1,13 @@
+.box {
+    inline-size: 200px;
+    overflow-wrap: break-word;
+  }
+
+.chat-card {
+    max-width: 400px;
+    margin-bottom: 8px;
+}
+
+.mat-card-content{
+    word-wrap: break-word;
+}

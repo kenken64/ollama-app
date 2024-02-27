@@ -1,12 +1,18 @@
 <div class="chat">
-    <mat-list>
-        <mat-list-item *ngFor="let message of messages">
-            <div matLine>
-                <strong>{{ message.sender }}: </strong>{{ message.text }}
-            </div>
-        </mat-list-item>
-    </mat-list>
+    <!-- Cards with media area -->
+    <mat-card class="chat-card" *ngFor="let message of messages">
+        <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>{{ message.sender }}</mat-card-title>
+        </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content class="mat-card-content">
+            {{ message.text }}
+        </mat-card-content>
+  </mat-card>
 </div>
+
+
 
 <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
 

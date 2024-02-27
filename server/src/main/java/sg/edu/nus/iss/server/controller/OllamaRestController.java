@@ -34,11 +34,10 @@ public class OllamaRestController {
 
         JsonObject result = null;
         try {
-            System.out.println(message);
             String response = svc.chatWithOallama(message);
             System.out.println(response);
             JsonObjectBuilder bld = Json.createObjectBuilder()
-            .add("response", response);
+            .add("message", response);
             result = bld.build();
         } catch (OllamaBaseException e) {
             return ResponseEntity
@@ -56,6 +55,7 @@ public class OllamaRestController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(e.getMessage());
         }
+        System.out.println(result.toString());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
