@@ -1,25 +1,30 @@
-<div class="chat">
-    <!-- Cards with media area -->
-    <mat-card class="chat-card" *ngFor="let message of messages">
-        <mat-card-header>
-        <mat-card-title-group>
-            <mat-card-title>{{ message.sender }}</mat-card-title>
-        </mat-card-title-group>
-        </mat-card-header>
-        <mat-card-content class="mat-card-content">
-            {{ message.text }}
-        </mat-card-content>
-  </mat-card>
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>Ollama Chat</h2>
+    </div>
+    <div class="chat-messages">
+        <div class="center">
+            <mat-spinner></mat-spinner>
+        </div>
+        
+        <!-- Messages will be appended here dynamically -->
+        <mat-list class="example-list-wrapping">
+            <mat-list-item class="no-wrap" *ngFor="let message of messages">
+              <span matListItemTitle>{{ message.sender }}</span>
+              {{ message.text }}
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div class="chat-input">
+        <form [formGroup]="messageForm" id="messageForm" (ngSubmit)="sendMessage()">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input matInput id="messageInput" formControlName="text" placeholder="Type a message here..">
+                <mat-error *ngIf="messageForm?.get('text')?.invalid">Message is required</mat-error>
+            </mat-form-field>
+            <button mat-fab extended color="primary" type="submit">
+                <mat-icon>send</mat-icon>
+                Send
+            </button>
+        </form>
+    </div>
 </div>
-
-
-
-<form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-
-    <mat-form-field appearance="fill">
-        <input matInput formControlName="text" placeholder="Type a message here..">
-        <mat-error *ngIf="messageForm?.get('text')?.invalid">Message is required</mat-error>
-    </mat-form-field>
-    <br>
-    <button mat-raised-button color="primary" type="submit">Send</button>
-</form>

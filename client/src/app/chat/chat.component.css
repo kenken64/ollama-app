@@ -11,3 +11,80 @@
 .mat-card-content{
     word-wrap: break-word;
 }
+
+mat-grid-tile {
+    background: white;
+}
+
+.example-list-wrapping {
+    max-width: 500px;
+  }
+
+.no-wrap {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+mat-list-item {
+    word-wrap: break-word;
+}
+
+.chat-container {
+    width: 500px;
+    height: 600px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    text-align: center;
+    padding: 5px;
+    background: #d1cece;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 10px;
+    height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+}
+
+.chat-input {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background: white;
+}
+
+#messageInput {
+    width: 80%;
+    padding: 5px;
+}
+
+#messageForm button {
+    width: 11%;
+    padding: 5px;
+    margin-left: 1%;
+}
+
+.example-full-width {
+    width: 40%;
+  }
+
+
+.center {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+}
+
+
+  
