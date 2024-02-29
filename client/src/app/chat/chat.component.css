@@ -1,7 +1,3 @@
-.box {
-    inline-size: 200px;
-    overflow-wrap: break-word;
-  }
 
 .chat-card {
     max-width: 400px;
@@ -20,13 +16,10 @@ mat-grid-tile {
     max-width: 500px;
   }
 
-.no-wrap {
+.example-list-wrapping .mat-list-item {
+    white-space: normal;
     word-wrap: break-word;
-    white-space: pre-wrap;
-}
-
-mat-list-item {
-    word-wrap: break-word;
+    height: auto;
 }
 
 .chat-container {
@@ -50,7 +43,7 @@ mat-list-item {
     flex-grow: 1;
     padding: 10px;
     height: 400px; /* Adjust as needed */
-    overflow-y: auto;
+    overflow-y: true;
 }
 
 .chat-input {

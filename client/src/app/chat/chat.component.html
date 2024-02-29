@@ -7,11 +7,10 @@
             <mat-spinner *ngIf="messageSent"></mat-spinner>
         </div>
         
-        <!-- Messages will be appended here dynamically -->
         <mat-list class="example-list-wrapping">
-            <mat-list-item class="no-wrap" *ngFor="let message of messages">
+            <mat-list-item *ngFor="let message of messages">
               <span matListItemTitle>{{ message.sender }}</span>
-              {{ message.text }}
+              <p matListItemLine matTooltip="{{ message.text }}">{{ message.text }}</p>
             </mat-list-item>
         </mat-list>
     </div>
