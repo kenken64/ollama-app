@@ -4,7 +4,7 @@
     </div>
     <div class="chat-messages">
         <div class="center">
-            <mat-spinner></mat-spinner>
+            <mat-spinner *ngIf="messageSent"></mat-spinner>
         </div>
         
         <!-- Messages will be appended here dynamically -->
@@ -21,7 +21,7 @@
                 <input matInput id="messageInput" formControlName="text" placeholder="Type a message here..">
                 <mat-error *ngIf="messageForm?.get('text')?.invalid">Message is required</mat-error>
             </mat-form-field>
-            <button mat-fab extended color="primary" type="submit">
+            <button mat-fab extended color="primary" type="submit" [disabled]="messageSent">
                 <mat-icon>send</mat-icon>
                 Send
             </button>

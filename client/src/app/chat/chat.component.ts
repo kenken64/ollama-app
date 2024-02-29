@@ -11,7 +11,8 @@ import { OllamaService } from '../services/ollama.service';
 export class ChatComponent {
   messages: Message[] = [];
   messageForm: FormGroup;
-  
+  messageSent : boolean = false;
+
   constructor(private fb: FormBuilder, 
         private ollamaService: OllamaService) { 
     this.messageForm = this.fb.group({
@@ -25,8 +26,10 @@ export class ChatComponent {
       const text = this.messageForm.value.text;
       console.log('User: ' + text);
       this.messages.push({text: text, sender: 'User', timestamp: new Date()});
+      this.messageSent = true;
       this.ollamaService.chatwithOllama(text).then((response) => {
         this.messages.push({text: response.message, sender: 'Ollama', timestamp: new Date()});
+        this.messageSent = false;
       });
 
       this.messageForm.reset();
