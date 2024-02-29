@@ -1,19 +1,17 @@
 <div class="chat-container">
     <div class="chat-header">
-        <h2>Ollama Chat</h2>
+        <h2 class="app-title">Ollama Chat</h2>
     </div>
-    <div class="chat-messages">
-        <div class="center">
-            <mat-spinner *ngIf="messageSent"></mat-spinner>
-        </div>
-        
-        <mat-list class="example-list-wrapping">
-            <mat-list-item *ngFor="let message of messages">
-              <span matListItemTitle>{{ message.sender }}</span>
-              <p matListItemLine matTooltip="{{ message.text }}">{{ message.text }}</p>
-            </mat-list-item>
-        </mat-list>
+    
+    <div class="center">
+        <mat-spinner *ngIf="messageSent"></mat-spinner>
     </div>
+
+    <div class="chat-messages" *ngFor="let message of messages">
+        <span matListItemTitle>{{ message.sender }}</span>
+            <p class="ollama-wrap" matTooltip="{{ message.text }}">{{ message.text }}</p>
+    </div>
+
     <div class="chat-input">
         <form [formGroup]="messageForm" id="messageForm" (ngSubmit)="sendMessage()">
             <mat-form-field class="example-full-width" appearance="fill">

@@ -34,7 +34,7 @@ public class OllamaRestController {
 
         JsonObject result = null;
         try {
-            String response = svc.chatWithOallama(message);
+            String response = svc.chatWithOllama(message);
             System.out.println(response);
             JsonObjectBuilder bld = Json.createObjectBuilder()
             .add("message", response);

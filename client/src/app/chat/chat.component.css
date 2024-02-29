@@ -25,7 +25,7 @@ mat-grid-tile {
 .chat-container {
     width: 500px;
     height: 600px;
-    border: 1px solid #ccc;
+    border: 1px solid white;
     border-left: none;
     border-right: none;
     margin: 0 auto;
@@ -36,7 +36,11 @@ mat-grid-tile {
 .chat-header {
     text-align: center;
     padding: 5px;
-    background: #d1cece;
+    background: rgb(113, 40, 230);
+}
+
+.app-title {
+    color: white;
 }
 
 .chat-messages {
@@ -77,6 +81,15 @@ mat-grid-tile {
     transform: translateX(-50%) translateY(-50%);
     -moz-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
+}
+
+.ollama-wrap {
+    border-radius: 6px;
+    background-color: aliceblue;
+    border: 2px dashed gray;
+    max-width: 70%;
+    padding: 1em;
+    margin-bottom: .4em;
 }
 
 

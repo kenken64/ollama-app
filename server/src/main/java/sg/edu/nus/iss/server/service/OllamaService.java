@@ -14,7 +14,7 @@ import io.github.amithkoujalgi.ollama4j.core.utils.OptionsBuilder;
 @Service
 public class OllamaService {
     
-    public String chatWithOallama(String message) throws OllamaBaseException, 
+    public String chatWithOllama(String message) throws OllamaBaseException, 
             IOException, InterruptedException {
         String host = "http://localhost:11434/";
         OllamaAPI ollamaAPI = new OllamaAPI(host);
