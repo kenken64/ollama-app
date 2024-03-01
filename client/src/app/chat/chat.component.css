@@ -48,6 +48,10 @@ mat-grid-tile {
     padding: 10px;
 }
 
+.scrollable {
+    overflow: scroll;
+}
+
 .chat-input {
     position: fixed;
     bottom: 0;
