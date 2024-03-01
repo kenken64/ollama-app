@@ -9,7 +9,18 @@
 
     <div class="chat-messages" *ngFor="let message of messages">
         <span>{{ message.sender }}</span>
-            <p class="ollama-wrap" matTooltip="{{ message.text }}">{{ message.text }}</p>
+            <p *ngIf="message.type==='msg'" class="ollama-wrap" matTooltip="{{ message.text }}">{{ message.text }}</p>
+            <mat-card *ngIf="message.type==='img'" class="example-card">
+                <mat-card-header>
+                  <mat-card-title-group>
+                    <mat-card-title></mat-card-title>
+                    <mat-card-subtitle></mat-card-subtitle>
+                  </mat-card-title-group>
+                </mat-card-header>
+                <mat-card-content>
+                    <img mat-card-xl-image [src]="message.text" >
+                </mat-card-content>
+              </mat-card>
     </div>
 
     <div class="chat-input">
@@ -22,6 +33,8 @@
                 <mat-icon>send</mat-icon>
                 Send
             </button>
+            <button type="button" mat-fab extended color="primary" (click)="fileUpload.click()">Choose File <mat-icon>file_copy</mat-icon></button>
+            <input hidden type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
         </form>
     </div>
 </div>

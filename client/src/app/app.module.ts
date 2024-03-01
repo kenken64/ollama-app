@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChatComponent } from './chat/chat.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,6 +38,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     HttpClientModule,
     MatCardModule,
     MatGridListModule,
+    FormsModule,
     MatIconModule,
     MatProgressSpinnerModule,
     MatTooltipModule
