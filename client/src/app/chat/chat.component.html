@@ -23,12 +23,32 @@
                 <input matInput id="messageInput" formControlName="text" placeholder="Type a message here..">
                 <mat-error *ngIf="messageForm?.get('text')?.invalid">Message is required</mat-error>
             </mat-form-field>
-            <button mat-fab extended color="primary" type="submit" [disabled]="messageSent">
+            <button mat-button color="primary" class="send-button" type="submit" [disabled]="messageSent">
                 <mat-icon>send</mat-icon>
-                Send
             </button>
-            <button type="button" mat-fab extended color="primary" (click)="fileUpload.click()" [disabled]="messageSent">Choose File <mat-icon>file_copy</mat-icon></button>
+        
+            <button type="button" mat-button class="fileupload-button" color="primary" 
+                (click)="fileUpload.click()" [disabled]="messageSent">
+                <mat-icon>file_copy</mat-icon>
+            </button>
             <input hidden type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
         </form>
     </div>
+
+    <!-- <div class="chat-input-container">
+        <form [formGroup]="messageForm" id="messageForm" (ngSubmit)="sendMessage()">
+            <div class="flexContainer">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <input matInput id="messageInput" class="chat-input" formControlName="text" placeholder="Type a message here..">
+                    <mat-error *ngIf="messageForm?.get('text')?.invalid">Message is required</mat-error>
+                </mat-form-field>
+                <button mat-mini-fab color="primary" type="submit" class="send-button" [disabled]="messageSent">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </div>
+            
+            <button type="button" mat-mini-fab color="primary" (click)="fileUpload.click()" [disabled]="messageSent"><mat-icon>file_copy</mat-icon></button>
+            <input hidden type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+        </form>
+    </div> -->
 </div>

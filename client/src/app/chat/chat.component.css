@@ -59,7 +59,7 @@ mat-grid-tile {
     width: 100%;
     padding: 10px;
     background: white;
-    left: 20%;
+    
 }
 
 #messageInput {
@@ -74,9 +74,41 @@ mat-grid-tile {
 }
 
 .example-full-width {
-    width: 40%;
+    width: 100%;
+    padding: 5px;
+}
+
+.send-button {
+    position: absolute;
+    right: 120px;
+    top: 40%;
+    transform: translateY(-50%);
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .send-button:hover {
+    background-color: white;
   }
 
+  .fileupload-button {
+    position: absolute;
+    right: 20px;
+    top: 40%;
+    transform: translateY(-50%);
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .fileupload-button:hover {
+    background-color: white;
+  }
 
 .center {
     left: 50%;
