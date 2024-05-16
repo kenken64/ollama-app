@@ -50,6 +50,7 @@ mat-grid-tile {
 
 .scrollable {
     overflow: scroll;
+    min-height: 80%;
 }
 
 .chat-input {
