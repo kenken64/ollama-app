@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Message } from '../model/message';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { OllamaService } from '../services/ollama.service';
+import { markdownToHtml } from '../markdown-renderer/transform-markdown';
 
 @Component({
   selector: 'app-chat',
@@ -13,7 +14,11 @@ export class ChatComponent {
   messageForm: FormGroup;
   messageSent : boolean = false;
   fileName:string = '';
-  
+  responseMessage:string = "";
+
+  @ViewChild('userMessages')
+  inputMessageRef?: ElementRef;
+
   constructor(private fb: FormBuilder, 
         private ollamaService: OllamaService) { 
     this.messageForm = this.fb.group({
@@ -36,26 +41,33 @@ export class ChatComponent {
             this.messages.push({text: imageUrl, sender: 'User', timestamp: new Date(), type:'img'});
         }
         reader.readAsDataURL(event.target.files[0]);
-        this.ollamaService.uploadFile(formData).then((response) => {
-          this.messages.push({text: response, sender: 'Ollama', timestamp: new Date(), type:'msg'});
+        this.ollamaService.uploadFile(formData).then(async (response)  => {
+          if(response.match(/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/gm)){
+            console.log("contains dot n number !");
+          }
+          this.responseMessage = await markdownToHtml(response);
+          this.messages.push({text: this.responseMessage, sender: 'Ollama', timestamp: new Date(), type:'msg'});
           this.messageSent = false;
         });  
     }
   }
 
-  sendMessage() {
+  sendMessage(formDirective: FormGroupDirective) {
     console.log("Sending...");
     if(this.messageForm.valid){
       const text = this.messageForm.value.text;
       console.log('User: ' + text);
       this.messages.push({text: text, sender: 'User', timestamp: new Date(), type:'msg'});
       this.messageSent = true;
-      this.ollamaService.chatwithOllama(text).then((response) => {
-        this.messages.push({text: response, sender: 'Ollama', timestamp: new Date(), type:'msg'});
+      this.ollamaService.chatwithOllama(text).then(async (response) => {
+        this.responseMessage = await markdownToHtml(response);
+        this.messages.push({text: this.responseMessage, sender: 'Ollama', timestamp: new Date(), type:'msg'});
         this.messageSent = false;
+        this.inputMessageRef?.nativeElement.scrollIntoView({ behavior: 'smooth'});
       });
 
       this.messageForm.reset();
+      formDirective.resetForm();
     }
   }
 }
