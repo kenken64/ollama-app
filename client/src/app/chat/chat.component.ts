@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Message } from '../model/message';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { OllamaService } from '../services/ollama.service';
@@ -9,7 +9,7 @@ import { markdownToHtml } from '../markdown-renderer/transform-markdown';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit{
   messages: Message[] = [];
   messageForm: FormGroup;
   messageSent : boolean = false;
@@ -17,7 +17,7 @@ export class ChatComponent {
   responseMessage:string = "";
 
   @ViewChild('userMessages')
-  inputMessageRef?: ElementRef;
+  private inputMessageRef?: ElementRef;
 
   constructor(private fb: FormBuilder, 
         private ollamaService: OllamaService) { 
@@ -25,6 +25,10 @@ export class ChatComponent {
       text: ['', [Validators.required, Validators.minLength(3)]],
     });    
   }
+
+  ngOnInit(): void {
+    this.scrollToBottom();
+  } 
 
   onFileSelected(event: any) {
     this.messageSent = true;
@@ -63,11 +67,21 @@ export class ChatComponent {
         this.responseMessage = await markdownToHtml(response);
         this.messages.push({text: this.responseMessage, sender: 'Ollama', timestamp: new Date(), type:'msg'});
         this.messageSent = false;
-        this.inputMessageRef?.nativeElement.scrollIntoView({ behavior: 'smooth'});
       });
 
       this.messageForm.reset();
       formDirective.resetForm();
+      
     }
+  }
+
+  ngAfterViewChecked() {  
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+        this.inputMessageRef!.nativeElement.scrollTop = this.inputMessageRef?.nativeElement.scrollHeight;
+    } catch(err) { }                 
   }
 }
