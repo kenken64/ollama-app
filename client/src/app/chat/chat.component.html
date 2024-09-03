@@ -1,6 +1,14 @@
 <div class="chat-container">
     <div class="chat-header">
         <h2 class="app-title">Ollama Chat</h2>
+        <button type="button" mat-button matTooltip="Upload PDF" class="pdffileupload-button" color="primary" 
+            (click)="pdfUpload.click()" [disabled]="messageSent">
+            <mat-icon class="file-icon">description</mat-icon>
+        </button>
+        <input hidden type="file" class="file-input" (change)="onPDFFileSelected($event)" #pdfUpload>
+        <button mat-button color="primary" matTooltip="Send message" class="pdfsend-button" type="button" (click)="talktoPDF()">
+            <mat-icon class="file-icon">send</mat-icon>
+        </button>
     </div>
     
     <div class="center">
@@ -11,28 +19,30 @@
         <div  class="chat-messages" *ngFor="let message of messages">
             <span>{{ message.sender }}</span>
                 <div *ngIf="message.type==='msg'" class="ollama-wrap" matTooltip="{{ message.text }}" [innerHtml]=message.text></div>
-                <!-- <p *ngIf="message.type==='msg'" class="ollama-wrap" matTooltip="{{ message.text }}">{{ message.text }}</p> -->
                 <br>
                 <img *ngIf="message.type==='img'" [src]="message.text" width="200" height="200">
+                <br>
+                <a *ngIf="message.type==='pdf'" [href]="pdfUrl" >"{{ message.text }}"</a>
         </div>
     </div>
     
-
     <div class="chat-input">
         <form [formGroup]="messageForm" #formDirective="ngForm" id="messageForm" (ngSubmit)="sendMessage(formDirective)">
             <mat-form-field class="example-full-width" appearance="fill">
                 <input matInput id="messageInput" formControlName="text" placeholder="Type a message here..">
                 <mat-error *ngIf="messageForm?.get('text')?.invalid">Message is required</mat-error>
             </mat-form-field>
-            <button mat-button color="primary" class="send-button" type="submit" [disabled]="messageSent">
-                <mat-icon>send</mat-icon>
-            </button>
-        
-            <button type="button" mat-button class="fileupload-button" color="primary" 
-                (click)="fileUpload.click()" [disabled]="messageSent">
-                <mat-icon>file_copy</mat-icon>
-            </button>
-            <input hidden type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+            <div class="buttons-grid">
+                <button mat-button color="primary" matTooltip="Send message" class="send-button" type="submit" [disabled]="messageSent">
+                    <mat-icon>send</mat-icon>
+                </button>
+                <button type="button" mat-button matTooltip="Upload image" class="fileupload-button" color="primary" 
+                    (click)="fileUpload.click()" [disabled]="messageSent">
+                    <mat-icon>file_copy</mat-icon>
+                </button>
+                <input hidden type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+            </div>
+            
         </form>
     </div>
 

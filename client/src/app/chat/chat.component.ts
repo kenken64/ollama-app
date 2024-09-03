@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Message } from '../model/message';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { OllamaService } from '../services/ollama.service';
@@ -15,12 +15,12 @@ export class ChatComponent implements OnInit{
   messageSent : boolean = false;
   fileName:string = '';
   responseMessage:string = "";
-
+  pdfUrl: string = "";
   @ViewChild('userMessages')
   private inputMessageRef?: ElementRef;
 
   constructor(private fb: FormBuilder, 
-        private ollamaService: OllamaService) { 
+        private ollamaService: OllamaService, private cdRef: ChangeDetectorRef) { 
     this.messageForm = this.fb.group({
       text: ['', [Validators.required, Validators.minLength(3)]],
     });    
@@ -56,6 +56,48 @@ export class ChatComponent implements OnInit{
     }
   }
 
+  b64toBlob(b64Data:any, contentType=''){
+    const byteCharacters = atob(b64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArrays = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArrays], {type: contentType});
+    return blob;
+  }
+
+  onPDFFileSelected(event: any) {
+    this.messageSent = true;
+    
+    const file:File = event.target?.files[0];
+    if (file) {
+        this.fileName = file.name;
+        const formData = new FormData();
+        formData.append("pdf-file", file);
+        var reader = new FileReader();
+        reader.onload = (event:any) => {
+            let pdfBase64 = event.target.result;
+            pdfBase64.replace(/^[^,]+,/, '');
+            const base64Data = pdfBase64.split(',')[1];
+            console.log(base64Data);
+            var fileblob = this.b64toBlob(base64Data, 'application/pdf');
+            this.pdfUrl = window.URL.createObjectURL(fileblob); 
+            console.log(this.pdfUrl);
+            this.messages.push({text: this.fileName, sender: 'User', timestamp: new Date(), type:'pdf'});
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        this.ollamaService.uploadPDFFile(formData).then(async (response)  => {
+          if(response.match(/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/gm)){
+            console.log("contains dot n number !");
+          }
+          console.log(response);
+          this.messages.push({text: response, sender: 'Ollama', timestamp: new Date(), type:'msg'});
+          this.messageSent = false;
+        });  
+    }
+  }
+
   sendMessage(formDirective: FormGroupDirective) {
     console.log("Sending...");
     if(this.messageForm.valid){
@@ -71,7 +113,26 @@ export class ChatComponent implements OnInit{
 
       this.messageForm.reset();
       formDirective.resetForm();
-      
+      this.scrollToBottom();
+    }
+  }
+
+  talktoPDF(){
+    console.log("Sending...");
+    if(this.messageForm.valid){
+      const text = this.messageForm.value.text;
+      console.log('User: ' + text);
+      this.messages.push({text: text, sender: 'User', timestamp: new Date(), type:'msg'});
+      this.messageSent = true;
+      this.ollamaService.chatwithOllamaPDF(text).then(async (response) => {
+        console.log(response);
+        //this.responseMessage = await markdownToHtml(response);
+        this.messages.push({text: response, sender: 'Ollama', timestamp: new Date(), type:'msg'});
+        this.messageSent = false;
+      });
+
+      this.messageForm.reset();
+      this.scrollToBottom();
     }
   }
 
@@ -81,7 +142,8 @@ export class ChatComponent implements OnInit{
 
   scrollToBottom(): void {
     try {
-        this.inputMessageRef!.nativeElement.scrollTop = this.inputMessageRef?.nativeElement.scrollHeight;
+      this.cdRef.detectChanges();
+      this.inputMessageRef!.nativeElement.scrollTop = this.inputMessageRef?.nativeElement.scrollHeight;
     } catch(err) { }                 
   }
 }
