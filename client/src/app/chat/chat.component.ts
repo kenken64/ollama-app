@@ -3,6 +3,8 @@ import { Message } from '../model/message';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { OllamaService } from '../services/ollama.service';
 import { markdownToHtml } from '../markdown-renderer/transform-markdown';
+import { SunoApiService } from '../services/suno.api.service';
+
 
 @Component({
   selector: 'app-chat',
@@ -16,18 +18,27 @@ export class ChatComponent implements OnInit{
   fileName:string = '';
   responseMessage:string = "";
   pdfUrl: string = "";
+  screenAvailWidth: number = 0;
+
   @ViewChild('userMessages')
   private inputMessageRef?: ElementRef;
 
   constructor(private fb: FormBuilder, 
-        private ollamaService: OllamaService, private cdRef: ChangeDetectorRef) { 
+        private ollamaService: OllamaService, private cdRef: ChangeDetectorRef,
+        private sunoSvc: SunoApiService) { 
     this.messageForm = this.fb.group({
       text: ['', [Validators.required, Validators.minLength(3)]],
     });    
   }
 
   ngOnInit(): void {
-    this.scrollToBottom();
+    console.log(screen.availWidth);
+    this.screenAvailWidth = screen.availWidth;
+    if(screen.availWidth < 1090){
+      console.log("In Potrait mode");
+    }else{
+      console.log("In Landscape mode");
+    }
   } 
 
   onFileSelected(event: any) {
@@ -138,6 +149,21 @@ export class ChatComponent implements OnInit{
 
   ngAfterViewChecked() {  
     this.scrollToBottom();
+  }
+
+  generateSong(): void {
+    if(this.messageForm.valid){
+      const text = this.messageForm.value.text;
+      console.log('User: ' + text);
+      this.messages.push({text: text, sender: 'User', timestamp: new Date(), type:'msg'});
+      this.messageSent = true;
+      this.sunoSvc.generateSongFromSuno(text).then(async (response) => {
+        console.log(response[0]?.audio_url);
+        this.messages.push({text: response[0]?.audio_url, sender: 'Ollama', timestamp: new Date(), type:'audio'});
+        this.messageSent = false;
+      });
+      this.messageForm.reset();
+    }
   }
 
   scrollToBottom(): void {

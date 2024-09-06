@@ -1,13 +1,16 @@
 <div class="chat-container">
     <div class="chat-header">
         <h2 class="app-title">Ollama Chat</h2>
-        <button type="button" mat-button matTooltip="Upload PDF" class="pdffileupload-button" color="primary" 
+        <button type="button" mat-button matTooltip="Upload PDF" class="pdffileupload-button" [ngStyle]="screenAvailWidth | alignSendButton" color="primary" 
             (click)="pdfUpload.click()" [disabled]="messageSent">
             <mat-icon class="file-icon">description</mat-icon>
         </button>
         <input hidden type="file" class="file-input" (change)="onPDFFileSelected($event)" #pdfUpload>
-        <button mat-button color="primary" matTooltip="Send message" class="pdfsend-button" type="button" (click)="talktoPDF()">
+        <button mat-button color="primary" matTooltip="Send message" class="pdfsend-button" type="button" (click)="talktoPDF()" [ngStyle]="screenAvailWidth | alignUploadButton">
             <mat-icon class="file-icon">send</mat-icon>
+        </button>
+        <button mat-button color="primary" matTooltip="Generate Music" class="musicsend-button" type="button" (click)="generateSong()" [ngStyle]="screenAvailWidth | alignSendMusicButton">
+            <mat-icon class="file-icon">music_note</mat-icon>
         </button>
     </div>
     
@@ -23,7 +26,8 @@
                 <img *ngIf="message.type==='img'" [src]="message.text" width="200" height="200">
                 <br>
                 <a *ngIf="message.type==='pdf'" [href]="pdfUrl" >"{{ message.text }}"</a>
-        </div>
+                <br>
+                <audio *ngIf="message.type==='audio'" controls src="{{ message.text }}"></audio>
     </div>
     
     <div class="chat-input">

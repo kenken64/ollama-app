@@ -19,11 +19,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AlignSendButtonPipe } from './shared/alignsend.btn.pipe';
+import { AlignUploadButtonPipe } from './shared/alignupload.btn.pipe';
+import { AlignSendMusicButtonPipe } from './shared/alignsendMusic.btn.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChatComponent
+    ChatComponent,
+    AlignSendButtonPipe,
+    AlignUploadButtonPipe,
+    AlignSendMusicButtonPipe
   ],
   imports: [
     BrowserModule,
